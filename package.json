@@ -1,0 +1,30 @@
+{
+  "name": "hiteshi-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./main/src/index.js",
+  "scripts": {
+    "start:dev": "env-cmd -f ./main/config/envs/dev.env nodemon ./main/src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.0",
+    "qrcode": "^1.5.0",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
+  }
+}
