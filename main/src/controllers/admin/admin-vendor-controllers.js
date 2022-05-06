@@ -1,33 +1,67 @@
-const VendorModel = require("../../models/vendor");
-const bodyValidation = require("../../utils/validations/index");
+const {AdminVendorServicesInstance} = require("../../services/admin/admin-vendor-services");
+const HttpResponse = require("../../utils/httpResponse/all-http-response")
+
 
 const createVendorProfileController = async (req, res, next) => {
    try {
-      const { body } = req;
-      const createdBy = req.admin.userName
-      const validatedBody = await bodyValidation("vendorSignup", body);
-
-      const vendor = new VendorModel({...validatedBody, createdBy});
-      await vendor.save();
-      res.json(vendor)
-
-   } catch (err) {
-      res.status(400).send("bad request!")
+      const vendor = AdminVendorServicesInstance.createVendorProfile(req.validatedBody, req.admin);
+      const responseBody = HttpResponse.created(vendor);
+      res.send(responseBody);
+   } catch (error) {
+      const mappedError = traceAndThrowError(error);
+      next(mappedError);
    }
 };
 
-const viewAllVendoreProfileController = async (req, res, next) => {
-   try {
-       const allVendorProfile = await VendorModel.find();
-       if (!allVendorProfile) throw new Error("Vendors not found!");
 
-       res.json({vendorsProfile: allVendorProfile})
-   } catch (err) {
-      res.status(404).send("not found")
+const viewVendorProfileController = async (req, res, next) => {
+   try {
+       const vendorProfile = await AdminVendorServicesInstance.viewVendorProfile(req.params.id);
+       const responseBody = await  HttpResponse.OK(vendorProfile);
+       res.send(responseBody);
+   } catch (error) {
+      const mappedError = traceAndThrowError(error);
+      next(mappedError);
+   }
+};
+
+const viewAllVendorProfileController = async (req, res, next) => {
+   try {
+       const allVendorProfile = await AdminVendorServicesInstance.viewAllVendorsProfile(req.admin)
+       const responseBody = await  HttpResponse.OK(allVendorProfile);
+       res.send(responseBody);
+   } catch (error) {
+      const mappedError = traceAndThrowError(error);
+      next(mappedError);
+   }
+};
+
+const updateVendorProfiles = async (req, res, next) => {
+   try {
+       const updatedBody = await AdminVendorServicesInstance.updateVendorProfiles(req.validatedBody)
+       const responseBody = await  HttpResponse.OK(updatedBody);
+       res.send(responseBody);
+   } catch (error) {
+      const mappedError = traceAndThrowError(error);
+      next(mappedError);
+   }
+};
+
+const deleteVendorProfiles = async (req, res, next) => {
+   try {
+     await AdminVendorServicesInstance.deleteVendorProfiles(req.admin)
+       const responseBody = await  HttpResponse.OK({message: "Account has been deleted"});
+       res.send(responseBody);
+   } catch (error) {
+      const mappedError = traceAndThrowError(error);
+      next(mappedError);
    }
 };
 
 module.exports = {
    createVendorProfileController,
-   viewAllVendoreProfileController
-}
+   viewAllVendorProfileController,
+   viewVendorProfileController,
+   updateVendorProfiles,
+   deleteVendorProfiles
+};

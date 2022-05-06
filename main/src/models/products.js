@@ -8,6 +8,9 @@ const productsSchema = new mongoose.Schema({
         minlength: 2,
         maxlength: 100
     },
+    productImage: {
+        type: Buffer,
+    },
     modelNo: {
         type: String,
         required: true,
@@ -20,15 +23,10 @@ const productsSchema = new mongoose.Schema({
         unique: true,
         trim: true,
     },
-    QRCode: {
-        type: Buffer,
-        required: true,
-    },
     owner: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        trim: true,
-        lowercase: true
+        ref: 'Vendor'
     }
 }, { timestamps: true });
 

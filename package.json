@@ -5,7 +5,8 @@
   "main": "./main/src/index.js",
   "scripts": {
     "start": "node ./main/src/index.js",
-    "start:dev": "env-cmd -f ./main/config/envs/dev.env nodemon ./main/src/index.js"
+    "start:dev": "env-cmd -f ./main/config/envs/dev.env nodemon ./main/src/index.js",
+    "test": ""
   },
   "keywords": [],
   "author": "",

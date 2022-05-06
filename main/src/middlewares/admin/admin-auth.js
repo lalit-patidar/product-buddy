@@ -1,6 +1,10 @@
 const jwt =  require("jsonwebtoken");
 const Admin = require('../../models/admin');
 const {JWT_ADMIN} = require("../../../config/app-config")
+const traceAndThrowError = require("../../utils/errorHandling/custom-error")
+const {appConstants} = require("../../../config/app-constants/constants");
+
+const {errors: {errorMessage}} = appConstants
 
 const auth = async (req, res, next) => {
     try {
@@ -11,12 +15,13 @@ const auth = async (req, res, next) => {
             "tokens.token": token
         });
 
-        if(!admin) throw new Error();
+        if(!admin) throw new Error(errorMessage.AuthenticationFailed);
 
         req.admin = admin;
         next()
-    } catch (err) {
-       next(err)
+    } catch (error) {
+        const mappedError = traceAndThrowError(error);
+        next(mappedError);
     }
 };
 
