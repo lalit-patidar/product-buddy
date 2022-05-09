@@ -21,4 +21,7 @@ app.get("/", (req, res) => {
     res.send("server is running...")
 })
 
-app.listen(port, () => console.log(`server is running at http://127.0.0.1:${port}`))
+app.listen(port, () => console.log(`server is running at http://127.0.0.1:${port}`));
+
+console.log("cureently you are in working branch... || if you want to deploy  then switch to main branch")
+
