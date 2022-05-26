@@ -1,11 +1,24 @@
 const {VendorCreadentialServicesInstance} = require("../../services/vendor/vendor-creadentials-services");
-const bodyValidation = require("../../utils/validations/index");
-const {VENDOR_ACCESS_KEY} = require("../../../config/app-config")
+const HttpResponse = require("../../utils/httpResponse/all-http-response");
+const traceAndThrowError = require("../../utils/errorHandling/custom-error");
+
+const createVendorController = async (req, res, next) => {
+   try {
+     const vendor = VendorCreadentialServicesInstance.createVendor(req.validatedBody);
+     await vendor.save();
+
+     const responseBody = HttpResponse.created(vendor);
+     res.send(responseBody);
+   } catch (error) {
+      const mappedError = traceAndThrowError(error);
+      next(mappedError);
+   }
+}
 
 const loginVendoreProfileController = async (req, res, next) => {
     try {
-       const serviceResponse = await VendorCreadentialServicesInstance.loginVendor(validatedBody.email, validatedBody.password, validatedBody.role);
-       const responseBody = await  HttpResponse.OK(serviceResponse);
+       const serviceResponse = await VendorCreadentialServicesInstance.loginVendor(req.validatedBody);
+       const responseBody = HttpResponse.OK(serviceResponse);
        res.send(responseBody);
     } catch (error) {
       const mappedError = traceAndThrowError(error);
@@ -16,7 +29,7 @@ const loginVendoreProfileController = async (req, res, next) => {
  const updateVendorProfileController = async (req, res, next) => {
    try {
        const serviceResponse = await VendorCreadentialServicesInstance.updateVendor(req.validatedBody, req.vendor)
-       const responseBody = await  HttpResponse.OK(serviceResponse);
+       const responseBody = HttpResponse.OK(serviceResponse);
        res.send(responseBody);
    } catch (error) {
       const mappedError = traceAndThrowError(error);
@@ -27,7 +40,7 @@ const loginVendoreProfileController = async (req, res, next) => {
 const deleteVendorProfileController = async (req, res, next) => {
    try {
       const serviceResponse = await VendorCreadentialServicesInstance.deleteVendor(req.admin)
-       const responseBody = await  HttpResponse.OK(serviceResponse);
+       const responseBody = HttpResponse.OK(serviceResponse);
        res.send(responseBody);
    } catch (error) {
       const mappedError = traceAndThrowError(error);
@@ -37,8 +50,8 @@ const deleteVendorProfileController = async (req, res, next) => {
 
 const logoutVendorProfileController = async (req, res, next) => {
    try {
-     const serviceResponse = await VendorCreadentialServicesInstance.deleteVendor(req.admin)
-       const responseBody = await  HttpResponse.OK(serviceResponse);
+     const serviceResponse = await VendorCreadentialServicesInstance.deleteVendor(req.vendor, req.token)
+       const responseBody = HttpResponse.OK(serviceResponse);
        res.send(responseBody);
    } catch (error) {
       const mappedError = traceAndThrowError(error);
@@ -47,7 +60,10 @@ const logoutVendorProfileController = async (req, res, next) => {
 };
 
  module.exports = {
+   createVendorController,
     loginVendoreProfileController,
-    
+    updateVendorProfileController,
+    deleteVendorProfileController,
+    logoutVendorProfileController
    };
  

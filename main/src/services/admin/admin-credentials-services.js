@@ -14,7 +14,6 @@ class AdminCreadentialServices {
     async loginAdmin(validatedBody) {
         try {
             const admin = await AdminModel.findCreadentials(validatedBody.email, validatedBody.password);
-            if (!admin) throw new Error("user not found..");
             const token = await admin.generateAuthToken();
             return { admin, token };
         } catch (error) {

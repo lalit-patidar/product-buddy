@@ -1,9 +1,9 @@
 const VendorModel = require("../../models/vendor");
 
 class VendorCreadentialServices {
-    async createVendor(validatedBody) {
+    async createVendor(body) {
        try {
-            const vendor = new VendorModel(validatedBody);
+            const vendor = new VendorModel(body);
             await vendor.save();
             return vendor;
         } catch (error) {
@@ -11,10 +11,10 @@ class VendorCreadentialServices {
         }
     }; 
 
-    async loginVendor(vendorLoginData) {
+    async loginVendor(body) {
         try {
-            const vendor = await VendorModel.findCreadentials(vendorLoginData.email, vendorLoginData.password, vendorLoginData.role);
-            if(!vendor) throw new Error("user not found..");
+            const {email, password,role} = body
+            const vendor = await VendorModel.findCreadentials(email, password, role);
             const token = await vendor.generateAuthToken();
             return {vendor, token};
         } catch (error) {
@@ -22,16 +22,13 @@ class VendorCreadentialServices {
         }
     };
 
-    async updateVendor(vendorUpdateBody, vendor) {
+    async updateVendor(body) {
         try {
-            for(let fileds of vendorUpdateBody) {
-                vendor[fileds] = vendorUpdateBody[fileds];
-            };
-
-            await vendor.save();
-            return vendor;
-        } catch (err) {
-             return err;
+            const {vendor:{_id}, vendorUpdateBody} = body
+            const updatedVendor = await VendorModel.findByIdAndUpdate({ _id: _id }, vendorUpdateBody)
+            return updatedVendor;
+        } catch (error) {
+             throw error;
         }
     };
 
@@ -40,13 +37,14 @@ class VendorCreadentialServices {
           try {
            await vendorProfile.remove();
            return {message: 'Admin has been deleted'};
-          } catch (err) {
-              return err
+          } catch (error) {
+              throw error
           }
     };
 
     async logoutVendor(vendorProfile, existingToken) {
         try {
+
           vendorProfile.tokens = vendorProfile.tokens.filter(token => token.token !== existingToken);
           vendorProfile.save();
          return {message: 'Account has be logedout'};

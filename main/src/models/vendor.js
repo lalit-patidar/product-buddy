@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const {JWT_VENDOR} = require("../../config/app-config")
+const {JWT_VENDOR} = require("../../config/app-config");
+const { appConstants } = require("../../config/app-constants/constants");
+
+const {errors: {dbErrors, errorMessage}} = appConstants;
 
 const vendorSchema = new mongoose.Schema({
     vendorName: {
@@ -19,7 +22,7 @@ const vendorSchema = new mongoose.Schema({
         trim: true,
         validate(value) {
             if(!validator.isEmail(value)) {
-                throw new Error("Email is invalid")
+                throw new Error(errorMessage.invalidEmail)
             }
         }
     },
@@ -71,13 +74,13 @@ vendorSchema.methods.generateAuthToken = async function () {
 vendorSchema.statics.findCreadentials = async (email, password, role) => {
     const admin = await Vendor.findOne({email, role});
     if(!admin) {
-        throw new Error("unable to login")
+        throw new Error(dbErrors.accountNotFound)
     };
 
     const isMatch = await bcrypt.compare(password, admin.password);
 
     if(!isMatch) {
-        throw new Error("unable to login")
+        throw new Error(dbErrors.invalidPassword)
     }
 
     return admin

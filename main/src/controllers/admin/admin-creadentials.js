@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
 const { AdminCreadentialServicesInstance } = require("../../services/admin/admin-credentials-services");
 const HttpResponse = require("../../utils/httpResponse/all-http-response");
-const traceAndThrowError = require("../../utils/errorHandling/custom-error")
+const traceAndThrowError = require("../../utils/errorHandling/custom-error");
 
 const signupAdminController = async (req, res, next) => {
    try {
@@ -16,7 +15,6 @@ const signupAdminController = async (req, res, next) => {
 
 const loginAdminController = async (req, res, next) => {
    try {
-      console.log(req.validatedBody, "this is from controller")
       const { admin, token } = await AdminCreadentialServicesInstance.loginAdmin(req.validatedBody);
       const responseBody = HttpResponse.OK({ admin, token });
       res.send(responseBody)
@@ -28,7 +26,6 @@ const loginAdminController = async (req, res, next) => {
 
 const updateAdminProfileController = async (req, res, next) => {
    try {
-      console.log("admin ..", req.admin)
      const admin = await AdminCreadentialServicesInstance.updateAdmin(req.validatedBody, req.admin);
      const responseBody = HttpResponse.OK();
      res.send(responseBody)
