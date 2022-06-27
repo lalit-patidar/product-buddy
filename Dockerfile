@@ -1,14 +1,13 @@
-FROM node:latest
+FROM node:alpine
 
 WORKDIR /usr/src/main
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci 
 
 COPY . .
 
-EXPOSE 3000
 
 CMD [ "npm", "start" ]
 

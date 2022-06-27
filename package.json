@@ -17,6 +17,7 @@
     "express": "^4.17.3",
     "helmet": "^5.0.2",
     "joi": "^17.6.0",
+    "jsbarcode": "^3.11.5",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.5.0",
     "mongoose": "^6.3.0",

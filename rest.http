@@ -1,0 +1,15 @@
+GET http://127.0.0.1:3000
+
+### Create admin
+
+POST http://127.0.0.1:4000/signup-admin/Fsdef14426iuygfXXD/secure
+Content-Type: application/json
+
+{
+   "adminSignup": {
+    "userName": "bhai ki chai",
+    "email": "bhai@gmail.com",
+    "password": "khfueushfr4545",
+    "role": "admin"
+   }
+}

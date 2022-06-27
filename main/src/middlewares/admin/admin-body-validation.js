@@ -8,6 +8,7 @@ const {errors: {errorMessage}} = appConstants;
 const adminReqBodyValidation = async (req, res, next) => {
     try {
         if (req.params.id !==  ADMIN_ACCESS_KEY) throw new Error(errorMessage.ApiAccessDenied);
+        console.log(req.body, "body")
         if (!req.body.adminSignup && !req.body.adminLogin && !req.body.adminUpdate  && !req.body.adminRemove) throw new Error(errorMessage.UnproccessedBody)
         const bodyName = Object.keys(req.body)[0];
         const validatedBody = await bodyValidation(bodyName, req.body[bodyName]);

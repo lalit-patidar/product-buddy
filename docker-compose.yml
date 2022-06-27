@@ -1,0 +1,29 @@
+version: '3.9'
+
+services: 
+  #mongodb services
+  mongo_db: 
+    container_name: db_continer
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+
+  #node.js api service    
+  api: 
+    build: .
+    ports:
+      - 4000:3000
+    environment: 
+       DB_URL: mongodb://db_continer:27017/db
+       PORT: 3000
+       JWT_SECRET_KEY_ADMIN: gfghdserfgkCVDGC45863er
+       JWT_SECRET_KEY_VENDOR: HCGgxcfxhhHHHikuxJhHi1540032ew
+       ADMIN_ACCESS_KEY_USE_PARAMS: Fsdef14426iuygfXXD
+       VENDORE_ACCESS_KEY_USE_PARAMS: XXD567hghgds382jXXD
+    depends_on:
+     - mongo_db  
+
+volumes:
+  mongo_db: {}
+

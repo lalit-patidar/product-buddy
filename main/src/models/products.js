@@ -11,17 +11,18 @@ const productsSchema = new mongoose.Schema({
     productImage: {
         type: Buffer,
     },
-    modelNo: {
-        type: String,
-        required: true,
-        maxlength: 500,
-        trim: true
+    category: {
+      type: String,
+      maxlength: 200,
+      trim: true
     },
-    SKU: {
-        type: Number,
+    //pifm - Product identity for manufacturer.
+    pifm: {
+        type: String,
+        maxlength: 500,
         required: true,
-        unique: true,
         trim: true,
+        unique: true
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
